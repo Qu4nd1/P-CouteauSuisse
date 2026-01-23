@@ -33,7 +33,7 @@ namespace CouteauSuisse
 
                 void Menu_Init()
                 {
-                    menuOptions = new string[] { "Morse", "Quit" };
+                    menuOptions = new string[] { "Morse","Morse Audio", "Quit" };
                     menuSelectedIndex = 0;
                 }
 
@@ -150,14 +150,19 @@ namespace CouteauSuisse
                     string menuSelectedOption = menuOptions[menuChoice - 1];
 
                     Console.Clear();
-                    Console.WriteLine($">>> {menuSelectedOption.ToUpper()} <<<");
                     Console.WriteLine("");
 
                     switch (menuSelectedOption)
                     {
                         case "Morse":
-                            Console.WriteLine("=== OPTIONS ===");
-                            MainMorse();
+                            Console.WriteLine("\t\t=== Morse ===");
+                            Console.WriteLine("");
+                            MainMorse(true);
+                            break;
+                        case "Morse Audio":
+                            Console.WriteLine("\t\t=== Morse Audio ===");
+                            Console.WriteLine("");
+                            MainMorse(false);
                             break;
                         case "Quit":
                             Console.WriteLine("Thanks for playing!");
@@ -167,20 +172,23 @@ namespace CouteauSuisse
                 }
 
             }
-            static void MainMorse()
+            static void MainMorse(bool choice)
             {
                 string? answerUser = "";
                 string answerConverted = "";
 
-                MorseMenu();
                 answerUser = AskUser();
-                ConvertToMorse(answerUser,answerConverted);
 
-                void MorseMenu()
+                switch(choice)
                 {
-                    Console.Clear();
-                    Console.WriteLine("\t=== Convertisseur de texte en code Morse ===");
-                    
+                    case true:
+                        answerConverted = ConvertToMorse(answerUser, answerConverted);
+                        Console.WriteLine($"\tRéponse: '{answerConverted}'");
+                        break;
+                    case false:
+                        answerConverted = ConvertToMorse(answerUser, answerConverted);
+                        ConvertMorseToSound(answerConverted);
+                        break;
                 }
                 string AskUser()
                 {
@@ -190,7 +198,7 @@ namespace CouteauSuisse
                     return answerUser;
                 }
 
-                void ConvertToMorse(string answerUser, string answerConverted)
+                string ConvertToMorse(string answerUser, string answerConverted)
                 {
                     char letterCheck = ' ';
                     string letterConverted = " ";
@@ -224,8 +232,41 @@ namespace CouteauSuisse
                             }
                         answerConverted = answerConverted + " ";
                     }
-                    Console.WriteLine($"Voici la réponse après convertion : \n '{answerConverted}'");
-                    
+                    return answerConverted;
+                }
+
+                void ConvertMorseToSound(string crtAnswerConverted)
+                {
+                    int unit = 200;
+                    for (int i = 0; i < crtAnswerConverted.Length; i++)
+                    {
+                        // POINT
+                        if (crtAnswerConverted[i] == '.')
+                        {
+                            Console.Write(crtAnswerConverted[i]);
+                            Console.Beep(800, unit);  
+                            Thread.Sleep(unit);        // silence après le point
+                        }
+                        // TRAIT
+                        else if (crtAnswerConverted[i] == '-')
+                        {
+                            Console.Write(crtAnswerConverted[i]);
+                            Console.Beep(800, unit * 3);  
+                            Thread.Sleep(unit);            // silence après le trait
+                        }
+                        // ESPACE ENTRE LETTRE
+                        else if (crtAnswerConverted[i] == ' ')
+                        {
+                            Console.Write(crtAnswerConverted[i]);
+                            Thread.Sleep(unit * 2);  // 2 unités supplémentaires (car on a déjà 1 unité après chaque symbole)
+                        }
+                        // ESPACE ENTRE MOT
+                        else if (crtAnswerConverted[i] == '/')
+                        {
+                            Console.Write(crtAnswerConverted[i]);
+                            Thread.Sleep(unit * 6);  // 6 unités supplémentaires (1 déjà présente + 6 = 7 total)
+                        }
+                    }
                 }
             }
         }
