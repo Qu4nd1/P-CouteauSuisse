@@ -33,7 +33,7 @@ namespace CouteauSuisse.Features
         }
         public static string AskUser()
         {
-            Console.WriteLine("Entrez une mot ou une phrase (sans accents, lettres A-Z) :");
+            Console.Write("Entrez une mot ou une phrase (sans accents, lettres A-Z) :");
             answerUser = Console.ReadLine();
 
             return answerUser;

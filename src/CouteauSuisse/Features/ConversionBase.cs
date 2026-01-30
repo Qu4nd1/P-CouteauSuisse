@@ -11,8 +11,8 @@ namespace CouteauSuisse.Features
     {
 
         static public bool running = true;
-        static public string? answerUser = "";
-        static public string? answerConverted = "";
+        static public string answerUser;
+        static public string answerConverted;
 
         public static void BaseMain()
         {
@@ -34,10 +34,50 @@ namespace CouteauSuisse.Features
         }
         public static string AskUser()
         {
-            Console.WriteLine("Entrez une mot ou une phrase (sans accents, lettres A-Z) :");
+            Console.Write("Entrez une valeur entière et postive: ");
             answerUser = Console.ReadLine();
 
             return answerUser;
+        }
+        public static void Transformation(int optionNumber)
+        {
+            double answerToConvert = Convert.ToDouble(answerUser);
+            double answerConverting = 0;
+            int baseNumber = 0;
+            int power = 0;
+
+            if (optionNumber == 1)
+            {
+                baseNumber = 2;
+                while (answerToConvert >= Math.Pow(baseNumber, power))
+                {
+                    power++;
+                }
+                for (int i = power; i > -1; i--)
+                {
+                    if (Math.Pow(baseNumber, i) <= answerToConvert)
+                    {
+                        answerToConvert -= Math.Pow(baseNumber, i);
+                        answerConverted += "1";
+                    }
+                    else
+                        answerConverted += "0";
+                }
+            }
+            else if (optionNumber == 2)
+            {
+                baseNumber = 2;
+                power = answerUser.Length;
+                for (int i = 0; i < answerUser.Length; i++)
+                {
+                    power--;
+                    if (answerUser[i] == '1')
+                        answerConverting = answerConverting + Math.Pow(baseNumber, power);
+                }
+                answerConverted = answerConverting.ToString();
+            }
+            Console.WriteLine($"Le résultat est: {answerConverted}");
+            answerConverted = "";
         }
     }
 }

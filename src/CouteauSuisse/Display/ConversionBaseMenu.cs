@@ -9,7 +9,7 @@ namespace CouteauSuisse.Display
 {
     static class ConversionBaseMenu
     {
-        static public string[] options = new string[] { "Binaire", "Octal", "Decimal", "Hexadecimal", "Back To Menu" };
+        static public string[] options = new string[] { "Décimal --> Binaire", "Binaire --> Décimal", "Binaire --> Octal", "Octal --> Binaire", "Back To Menu" };
         static public int selectedIndex = 0;
         public static void ShowTitle()
         {
@@ -83,44 +83,44 @@ namespace CouteauSuisse.Display
             return selectedIndex + 1; // Return 1-based choice
         }
 
-        public static void HandleChoice(int baseMenuChoice)
+        public static void HandleChoice(int choice)
         {
-            if (baseMenuChoice == -1 || baseMenuChoice < 1 || baseMenuChoice > options.Length)
+            if (choice == -1 || choice < 1 || choice > options.Length)
             {
                 Console.WriteLine("Invalid choice!");
                 return;
             }
 
-            string morseMenuSelectedOption = options[baseMenuChoice - 1];
+            string selectedOption = options[choice - 1];
 
             Console.Clear();
             Console.WriteLine("");
 
-            switch (morseMenuSelectedOption)
+            switch (selectedOption)
             {
-                case "Binaire":
+                case "Décimal --> Binaire":
                     Console.WriteLine("\t\t=== Binaire ===");
                     Console.WriteLine("");
                     ConversionBase.AskUser();
-
+                    ConversionBase.Transformation(1);
                     break;
-                case "Octal":
+                case "Binaire --> Décimal":
                     Console.WriteLine("\t\t=== Octal ===");
                     Console.WriteLine("");
                     ConversionBase.AskUser();
-
+                    ConversionBase.Transformation(2);
                     break;
-                case "Decimal":
+                case "Binaire --> Octal":
                     Console.WriteLine("\t\t=== Decimal ===");
                     Console.WriteLine("");
                     ConversionBase.AskUser();
-
+                    ConversionBase.Transformation(3);
                     break;
-                case "Hexadecimal":
+                case "Octal --> Binaire":
                     Console.WriteLine("\t\t=== Hexadecimal ===");
                     Console.WriteLine("");
                     ConversionBase.AskUser();
-
+                    ConversionBase.Transformation(4);
                     break;
                 case "Back To Menu":
 
