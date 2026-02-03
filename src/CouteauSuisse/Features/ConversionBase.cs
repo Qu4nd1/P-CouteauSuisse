@@ -40,9 +40,31 @@ namespace CouteauSuisse.Features
 
             return answerUser;
         }
+        public static void IntCheck()
+        {
+            bool answerValidity = false;
+            do
+            {
+                for (int i = 0; i < answerUser.Length; i++)
+                {
+                    if (char.IsDigit(answerUser[i]))
+                    {
+                        answerValidity = true;
+                    }
+                    else
+                        answerValidity = false;
+                }
+                if (answerValidity != true)
+                    AskUser();
+            } while (answerValidity != true);
+        }
+        public static void ValueRangeCheck()
+        {
+
+        }
         public static void Transformation(int optionNumber)
         {
-            double answerToConvert = Convert.ToDouble(answerUser);
+            double answerToConvert;
             double answerConverting = 0;
             int baseNumber = 0;
             int power = 0;
@@ -51,7 +73,8 @@ namespace CouteauSuisse.Features
             char[] answerUserTab = new char[answerUser.Length];
             char[] answerTransformtaion = Array.Empty<char>();
             int[] answerIntTransformation = Array.Empty<int>();
-            bool valueValidity = false;
+            
+
 
             for (int i = 0; i < answerUser.Length; i++)
             {
@@ -59,6 +82,8 @@ namespace CouteauSuisse.Features
             }
             if (optionNumber == 1)
             {
+                IntCheck();
+                answerToConvert = Convert.ToDouble(answerUser);
                 baseNumber = 2;
                 while (answerToConvert >= Math.Pow(baseNumber, power))
                 {
@@ -78,6 +103,7 @@ namespace CouteauSuisse.Features
             else if (optionNumber == 2)
             {
                 baseNumber = 2;
+                IntCheck();
                 power = answerUser.Length;
                 for (int i = 0; i < answerUser.Length; i++)
                 {
@@ -90,6 +116,7 @@ namespace CouteauSuisse.Features
             else if (optionNumber == 3)
             {
                 baseNumber = 2;
+                IntCheck();
                 if (answerUser.Length%3 != 0)
                 {
                     int originalSize = answerUserTab.Length;
@@ -145,8 +172,8 @@ namespace CouteauSuisse.Features
             else if (optionNumber == 4)
             {
                 baseNumber = 2;
-                
-                
+                IntCheck();
+
                 for (int i = 0; i < answerUser.Length; i++)
                 {
                     
