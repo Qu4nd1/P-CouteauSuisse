@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,6 +50,8 @@ namespace CouteauSuisse.Features
             int time = 0;
             char[] answerUserTab = new char[answerUser.Length];
             char[] answerTransformtaion = Array.Empty<char>();
+            int[] answerIntTransformation = Array.Empty<int>();
+            bool valueValidity = false;
 
             for (int i = 0; i < answerUser.Length; i++)
             {
@@ -136,6 +139,27 @@ namespace CouteauSuisse.Features
                             count++;
                         }
                         answerConverted += answerConverting.ToString();
+                    }
+                }
+            }
+            else if (optionNumber == 4)
+            {
+                baseNumber = 2;
+                
+                
+                for (int i = 0; i < answerUser.Length; i++)
+                {
+                    
+                    double valueToConvert = answerUser[i] - '0';
+                    for (int j = 3; j > 0; j--)
+                    {
+                        if (Math.Pow(baseNumber, j-1) <= valueToConvert)
+                        {
+                            valueToConvert -= Math.Pow(baseNumber, j-1);
+                            answerConverted += "1";
+                        }
+                        else
+                            answerConverted += "0";
                     }
                 }
             }
