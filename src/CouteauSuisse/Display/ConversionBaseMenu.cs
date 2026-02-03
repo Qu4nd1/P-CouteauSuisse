@@ -99,25 +99,25 @@ namespace CouteauSuisse.Display
             switch (selectedOption)
             {
                 case "Décimal --> Binaire":
-                    Console.WriteLine("\t\t=== Binaire ===");
+                    Console.WriteLine("\t\t=== Décimal --> Binaire ===");
                     Console.WriteLine("");
                     ConversionBase.AskUser();
                     ConversionBase.Transformation(1);
                     break;
                 case "Binaire --> Décimal":
-                    Console.WriteLine("\t\t=== Octal ===");
+                    Console.WriteLine("\t\t=== Binaire --> Décimal ===");
                     Console.WriteLine("");
                     ConversionBase.AskUser();
                     ConversionBase.Transformation(2);
                     break;
                 case "Binaire --> Octal":
-                    Console.WriteLine("\t\t=== Decimal ===");
+                    Console.WriteLine("\t\t=== Binaire --> Octal ===");
                     Console.WriteLine("");
                     ConversionBase.AskUser();
                     ConversionBase.Transformation(3);
                     break;
                 case "Octal --> Binaire":
-                    Console.WriteLine("\t\t=== Hexadecimal ===");
+                    Console.WriteLine("\t\t=== Octal --> Binaire ===");
                     Console.WriteLine("");
                     ConversionBase.AskUser();
                     ConversionBase.Transformation(4);

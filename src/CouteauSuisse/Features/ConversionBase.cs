@@ -45,7 +45,15 @@ namespace CouteauSuisse.Features
             double answerConverting = 0;
             int baseNumber = 0;
             int power = 0;
+            int binary2octalBundleSize = 3;
+            int time = 0;
+            char[] answerUserTab = new char[answerUser.Length];
+            char[] answerTransformtaion = Array.Empty<char>();
 
+            for (int i = 0; i < answerUser.Length; i++)
+            {
+                answerUserTab[i] = answerUser[i];
+            }
             if (optionNumber == 1)
             {
                 baseNumber = 2;
@@ -72,11 +80,66 @@ namespace CouteauSuisse.Features
                 {
                     power--;
                     if (answerUser[i] == '1')
-                        answerConverting = answerConverting + Math.Pow(baseNumber, power);
+                        answerConverting += Math.Pow(baseNumber, power);
                 }
                 answerConverted = answerConverting.ToString();
             }
-            Console.WriteLine($"Le résultat est: {answerConverted}");
+            else if (optionNumber == 3)
+            {
+                baseNumber = 2;
+                if (answerUser.Length%3 != 0)
+                {
+                    int originalSize = answerUserTab.Length;
+                    int reste = 0;
+                    bool found = false;
+                    do
+                    {
+                        if (3 * time > originalSize)
+                        {
+                            reste = (3 * time) - originalSize;
+                            found = true;
+                        }
+                        time++;
+                    } while (found != true);
+                    answerTransformtaion = new char[originalSize+reste];
+                    Array.Copy(answerUserTab, 0, answerTransformtaion, reste, originalSize); 
+                    for (int i = 0; i < reste; i++)
+                    {
+                        answerTransformtaion[i] = '0';
+                    }
+                    int count = 0;
+                    for (int i = answerTransformtaion.Length / 3; i > 0; i--)
+                    {
+                        answerConverting = 0;
+                        for (int j = binary2octalBundleSize; j > 0; j--)
+                        {
+                            if (answerTransformtaion[count] == '1')
+                                answerConverting += Math.Pow(baseNumber, j-1);
+                            count++;
+                        }
+                        answerConverted += answerConverting.ToString();
+                    }
+                    
+                }
+                else
+                {
+                    answerTransformtaion = new char[answerUserTab.Length];
+                    Array.Copy(answerUserTab, answerTransformtaion, answerUserTab.Length);
+                    int count = 0;
+                    for (int i = answerTransformtaion.Length / 3; i > 0; i--)
+                    {
+                        answerConverting = 0;
+                        for (int j = binary2octalBundleSize; j > 0; j--)
+                        {
+                            if (answerTransformtaion[count] == '1')
+                                answerConverting += Math.Pow(baseNumber, j-1);
+                            count++;
+                        }
+                        answerConverted += answerConverting.ToString();
+                    }
+                }
+            }
+                Console.WriteLine($"Le résultat est: {answerConverted}");
             answerConverted = "";
         }
     }
