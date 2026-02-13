@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CouteauSuisse.Features;
+using static CouteauSuisse.Features.Verifications;
 
 namespace CouteauSuisse.Display
 {
@@ -101,25 +102,25 @@ namespace CouteauSuisse.Display
                 case "Décimal --> Binaire":
                     Console.WriteLine("\t\t=== Décimal --> Binaire ===");
                     Console.WriteLine("");
-                    ConversionBase.AskUser();
+                    IntAndRangeCheck(1, ConversionBase.AskUser());
                     ConversionBase.Transformation(1);
                     break;
                 case "Binaire --> Décimal":
                     Console.WriteLine("\t\t=== Binaire --> Décimal ===");
                     Console.WriteLine("");
-                    ConversionBase.AskUser();
+                    IntAndRangeCheck(2, ConversionBase.AskUser());
                     ConversionBase.Transformation(2);
                     break;
                 case "Binaire --> Octal":
                     Console.WriteLine("\t\t=== Binaire --> Octal ===");
                     Console.WriteLine("");
-                    ConversionBase.AskUser();
+                    IntAndRangeCheck(3, ConversionBase.AskUser());
                     ConversionBase.Transformation(3);
                     break;
                 case "Octal --> Binaire":
                     Console.WriteLine("\t\t=== Octal --> Binaire ===");
                     Console.WriteLine("");
-                    ConversionBase.AskUser();
+                    IntAndRangeCheck(4, ConversionBase.AskUser());
                     ConversionBase.Transformation(4);
                     break;
                 case "Back To Menu":

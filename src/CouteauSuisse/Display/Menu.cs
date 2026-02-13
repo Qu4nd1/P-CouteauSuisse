@@ -20,7 +20,7 @@ namespace CouteauSuisse.Display
         public static void ShowTitle()
         {
             Console.WriteLine(@" ____  __        __ ___   ____    ____  
-/ ___| \ \      / /|_ _| / ___>  / ___| 
+/ ___| \ \      / /|_ _| / ___|  / ___| 
 \___ \  \ \ /\ / /  | |  \___ \  \___ \ 
  ___) |  \ V  V /   | |   ___) |  ___) |
 |____/    \_/\_/   |___| |____/  |____/ 

@@ -40,28 +40,6 @@ namespace CouteauSuisse.Features
 
             return answerUser;
         }
-        public static void IntCheck()
-        {
-            bool answerValidity = false;
-            do
-            {
-                for (int i = 0; i < answerUser.Length; i++)
-                {
-                    if (char.IsDigit(answerUser[i]))
-                    {
-                        answerValidity = true;
-                    }
-                    else
-                        answerValidity = false;
-                }
-                if (answerValidity != true)
-                    AskUser();
-            } while (answerValidity != true);
-        }
-        public static void ValueRangeCheck()
-        {
-
-        }
         public static void Transformation(int optionNumber)
         {
             double answerToConvert;
@@ -80,9 +58,9 @@ namespace CouteauSuisse.Features
             {
                 answerUserTab[i] = answerUser[i];
             }
-            if (optionNumber == 1)
+            //========= DECIMAL TO BINARY =========
+            if (optionNumber == 1) 
             {
-                IntCheck();
                 answerToConvert = Convert.ToDouble(answerUser);
                 baseNumber = 2;
                 while (answerToConvert >= Math.Pow(baseNumber, power))
@@ -100,10 +78,10 @@ namespace CouteauSuisse.Features
                         answerConverted += "0";
                 }
             }
-            else if (optionNumber == 2)
+            //========= BINARY TO DECIMAL =========
+            else if (optionNumber == 2) 
             {
                 baseNumber = 2;
-                IntCheck();
                 power = answerUser.Length;
                 for (int i = 0; i < answerUser.Length; i++)
                 {
@@ -113,10 +91,10 @@ namespace CouteauSuisse.Features
                 }
                 answerConverted = answerConverting.ToString();
             }
+            //========= BINARY TO OCTAL =========
             else if (optionNumber == 3)
             {
                 baseNumber = 2;
-                IntCheck();
                 if (answerUser.Length%3 != 0)
                 {
                     int originalSize = answerUserTab.Length;
@@ -169,11 +147,10 @@ namespace CouteauSuisse.Features
                     }
                 }
             }
+            //========= OCTAL TO BINARY
             else if (optionNumber == 4)
             {
                 baseNumber = 2;
-                IntCheck();
-
                 for (int i = 0; i < answerUser.Length; i++)
                 {
                     
@@ -190,7 +167,7 @@ namespace CouteauSuisse.Features
                     }
                 }
             }
-                Console.WriteLine($"Le résultat est: {answerConverted}");
+            Console.WriteLine($"Le résultat est: {answerConverted}");
             answerConverted = "";
         }
     }
