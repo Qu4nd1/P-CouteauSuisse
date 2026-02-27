@@ -1,67 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CouteauSuisse.Display;
+﻿using CouteauSuisse.Display;
 
 namespace CouteauSuisse.Features
 {
-    static class ConversionBase
+    class ConversionBase
     {
 
-        static public bool running = true;
-        static public string answerUser;
-        static public string answerConverted;
+        private bool _running = true;
+        private string _answerUser;
+        private string _answerConverted;
 
-        public static void BaseMain()
+        public void BaseMain(ConversionBase conversionBase, Verifications verifications)
         {
+            ConversionBaseMenu conversionBaseMenu = new ConversionBaseMenu();
             do
             {
-                int choice = ConversionBaseMenu.RunInteractive();
+                int choice = conversionBaseMenu.RunInteractive();
 
-                if (ConversionBaseMenu.options[choice - 1] == "Back To Menu")
+                if (conversionBaseMenu.Options[choice - 1] == "Back To Menu")
                 {
-                    running = false;
+                    _running = false;
                 }
                 else
                 {
-                    ConversionBaseMenu.HandleChoice(choice);
+                    conversionBaseMenu.HandleChoice(choice, conversionBase, verifications);
                     Console.WriteLine("\nPress any key to return to menu...");
                     Console.ReadKey(true);
                 }
-            } while (running);
+            } while (_running);
         }
-        public static string AskUser()
+        public string AskUser()
         {
             Console.Write("Entrez une valeur entière et postive: ");
-            answerUser = Console.ReadLine();
+            _answerUser = Console.ReadLine();
 
-            return answerUser;
+            return _answerUser;
         }
-        public static void Transformation(int optionNumber)
+        public void Transformation(int optionNumber)
         {
             double answerToConvert;
             double answerConverting = 0;
             int baseNumber = 0;
             int power = 0;
-            int binary2octalBundleSize = 3;
+            int binaryToOctalBundleSize = 3;
             int time = 0;
-            char[] answerUserTab = new char[answerUser.Length];
-            char[] answerTransformtaion = Array.Empty<char>();
-            int[] answerIntTransformation = Array.Empty<int>();
+            char[] answerUserTab = new char[_answerUser.Length];
+            char[] answerTransformation = Array.Empty<char>();
             
 
 
-            for (int i = 0; i < answerUser.Length; i++)
+            for (int i = 0; i < _answerUser.Length; i++)
             {
-                answerUserTab[i] = answerUser[i];
+                answerUserTab[i] = _answerUser[i];
             }
             //========= DECIMAL TO BINARY =========
             if (optionNumber == 1) 
             {
-                answerToConvert = Convert.ToDouble(answerUser);
+                answerToConvert = Convert.ToDouble(_answerUser);
                 baseNumber = 2;
                 while (answerToConvert >= Math.Pow(baseNumber, power))
                 {
@@ -72,30 +66,30 @@ namespace CouteauSuisse.Features
                     if (Math.Pow(baseNumber, i) <= answerToConvert)
                     {
                         answerToConvert -= Math.Pow(baseNumber, i);
-                        answerConverted += "1";
+                        _answerConverted += "1";
                     }
                     else
-                        answerConverted += "0";
+                        _answerConverted += "0";
                 }
             }
             //========= BINARY TO DECIMAL =========
             else if (optionNumber == 2) 
             {
                 baseNumber = 2;
-                power = answerUser.Length;
-                for (int i = 0; i < answerUser.Length; i++)
+                power = _answerUser.Length;
+                for (int i = 0; i < _answerUser.Length; i++)
                 {
                     power--;
-                    if (answerUser[i] == '1')
+                    if (_answerUser[i] == '1')
                         answerConverting += Math.Pow(baseNumber, power);
                 }
-                answerConverted = answerConverting.ToString();
+                _answerConverted = answerConverting.ToString();
             }
             //========= BINARY TO OCTAL =========
             else if (optionNumber == 3)
             {
                 baseNumber = 2;
-                if (answerUser.Length%3 != 0)
+                if (_answerUser.Length%3 != 0)
                 {
                     int originalSize = answerUserTab.Length;
                     int reste = 0;
@@ -109,41 +103,41 @@ namespace CouteauSuisse.Features
                         }
                         time++;
                     } while (found != true);
-                    answerTransformtaion = new char[originalSize+reste];
-                    Array.Copy(answerUserTab, 0, answerTransformtaion, reste, originalSize); 
+                    answerTransformation = new char[originalSize+reste];
+                    Array.Copy(answerUserTab, 0, answerTransformation, reste, originalSize); 
                     for (int i = 0; i < reste; i++)
                     {
-                        answerTransformtaion[i] = '0';
+                        answerTransformation[i] = '0';
                     }
                     int count = 0;
-                    for (int i = answerTransformtaion.Length / 3; i > 0; i--)
+                    for (int i = answerTransformation.Length / 3; i > 0; i--)
                     {
                         answerConverting = 0;
-                        for (int j = binary2octalBundleSize; j > 0; j--)
+                        for (int j = binaryToOctalBundleSize; j > 0; j--)
                         {
-                            if (answerTransformtaion[count] == '1')
+                            if (answerTransformation[count] == '1')
                                 answerConverting += Math.Pow(baseNumber, j-1);
                             count++;
                         }
-                        answerConverted += answerConverting.ToString();
+                        _answerConverted += answerConverting.ToString();
                     }
                     
                 }
                 else
                 {
-                    answerTransformtaion = new char[answerUserTab.Length];
-                    Array.Copy(answerUserTab, answerTransformtaion, answerUserTab.Length);
+                    answerTransformation = new char[answerUserTab.Length];
+                    Array.Copy(answerUserTab, answerTransformation, answerUserTab.Length);
                     int count = 0;
-                    for (int i = answerTransformtaion.Length / 3; i > 0; i--)
+                    for (int i = answerTransformation.Length / 3; i > 0; i--)
                     {
                         answerConverting = 0;
-                        for (int j = binary2octalBundleSize; j > 0; j--)
+                        for (int j = binaryToOctalBundleSize; j > 0; j--)
                         {
-                            if (answerTransformtaion[count] == '1')
+                            if (answerTransformation[count] == '1')
                                 answerConverting += Math.Pow(baseNumber, j-1);
                             count++;
                         }
-                        answerConverted += answerConverting.ToString();
+                        _answerConverted += answerConverting.ToString();
                     }
                 }
             }
@@ -151,24 +145,24 @@ namespace CouteauSuisse.Features
             else if (optionNumber == 4)
             {
                 baseNumber = 2;
-                for (int i = 0; i < answerUser.Length; i++)
+                for (int i = 0; i < _answerUser.Length; i++)
                 {
                     
-                    double valueToConvert = answerUser[i] - '0';
+                    double valueToConvert = _answerUser[i] - '0';
                     for (int j = 3; j > 0; j--)
                     {
                         if (Math.Pow(baseNumber, j-1) <= valueToConvert)
                         {
                             valueToConvert -= Math.Pow(baseNumber, j-1);
-                            answerConverted += "1";
+                            _answerConverted += "1";
                         }
                         else
-                            answerConverted += "0";
+                            _answerConverted += "0";
                     }
                 }
             }
-            Console.WriteLine($"Le résultat est: {answerConverted}");
-            answerConverted = "";
+            Console.WriteLine($"Le résultat est: {_answerConverted}");
+            _answerConverted = "";
         }
     }
 }

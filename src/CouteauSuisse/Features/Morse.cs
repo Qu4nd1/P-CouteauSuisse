@@ -7,38 +7,39 @@ using CouteauSuisse.Display;
 
 namespace CouteauSuisse.Features
 {
-    static class Morse
+    class Morse
     {
-        static public bool running = true;
-        static public string? answerUser = "";
-        static public string? answerConverted = "";
+        private bool _running = true;
+        public string AnswerUser = "";
+        public string AnswerConverted = "";
 
-        public static void MorseMain()
+        public void MorseMain(Morse morse, Verifications verifications)
         {
+            MorseMenu morseMenu = new MorseMenu();
             do
             {
-                int choice = MorseMenu.RunInteractive();
+                int choice = morseMenu.RunInteractive();
 
-                if (MorseMenu.options[choice - 1] == "Back To Menu")
+                if (morseMenu.Options[choice - 1] == "Back To Menu")
                 {
-                    running = false;
+                    _running = false;
                 }
                 else
                 {
-                    MorseMenu.HandleChoice(choice);
+                    morseMenu.HandleChoice(choice, morse, verifications);
                     Console.WriteLine("\nPress any key to return to menu...");
                     Console.ReadKey(true);
                 }
-            } while (running);
+            } while (_running);
         }
-        public static string AskUser()
+        public string AskUser()
         {
             Console.Write("Entrez une mot ou une phrase (sans accents, lettres A-Z) :");
-            answerUser = Console.ReadLine();
+            AnswerUser = Console.ReadLine();
 
-            return answerUser;
+            return AnswerUser;
         }
-        public static string ConvertToMorse(string answerUser, string answerConverted)
+        public string ConvertToMorse(string answerUser)
         {
             char letterCheck = ' ';
             string? letterConverted = " ";
@@ -58,7 +59,7 @@ namespace CouteauSuisse.Features
                         {' ', "/"}
                     };
 
-            answerConverted = "";
+            AnswerConverted = "";
             for (int i = 0; i < answerUser.Length; i++)
             {
                 letterNotFound = true;
@@ -68,14 +69,14 @@ namespace CouteauSuisse.Features
                 for (int j = 0; j < morseTable.Count && letterNotFound; j++)
                     if (morseTable.TryGetValue(letterCheck, out letterConverted))
                     {
-                        answerConverted = answerConverted + letterConverted;
+                        AnswerConverted += letterConverted;
                         letterNotFound = false;
                     }
-                answerConverted = answerConverted + " ";
+                AnswerConverted += " ";
             }
-            return answerConverted;
+            return AnswerConverted;
         }
-        public static void ConvertMorseToSound(string crtAnswerConverted)
+        public void ConvertMorseToSound(string crtAnswerConverted)
         {
             int unit = 200;
             for (int i = 0; i < crtAnswerConverted.Length; i++)

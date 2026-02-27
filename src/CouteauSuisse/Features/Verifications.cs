@@ -7,9 +7,9 @@ using static CouteauSuisse.Features.ConversionBase;
 
 namespace CouteauSuisse.Features
 {
-    static class Verifications
+    class Verifications
     {
-        public static string IntAndRangeCheck(int selectedOptionIndex, string answerUser)
+        public string IntAndRangeCheck(int selectedOptionIndex, string answerUser, ConversionBase conversionBase)
         {
             bool typeValidity = true;
             bool rangeValidity = true;
@@ -28,30 +28,29 @@ namespace CouteauSuisse.Features
                     }
                 }
                 if (typeValidity != true)
-                    answerUser = AskUser();
+                    answerUser = conversionBase.AskUser();
                 switch (selectedOptionIndex)
                 {
                     case 1:
                         break;
                     case 2:
                         if (RangeCheck(0, 1, answerUser) == false)
-                            answerUser = AskUser();
+                            answerUser = conversionBase.AskUser();
                         break;
                     case 3:
-                        
                         if (RangeCheck(0, 1, answerUser) == false)
-                            answerUser = AskUser();
+                            answerUser = conversionBase.AskUser();
                         break;
                     case 4:
                         if (RangeCheck(0, 7, answerUser) == false)
-                            answerUser = AskUser();
+                            answerUser = conversionBase.AskUser();
                         break;
                 }
             } while (typeValidity != true && rangeValidity != true);
             return answerUser;
             
         }
-        static public bool RangeCheck(int valeurMin, int valeurMax, string answerUser)
+        private bool RangeCheck(int valeurMin, int valeurMax, string answerUser)
         {
             bool rangeValidity = true;
 

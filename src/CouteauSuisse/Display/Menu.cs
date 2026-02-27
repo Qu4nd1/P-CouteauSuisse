@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CouteauSuisse.Features;
+﻿using CouteauSuisse.Features;
 
 namespace CouteauSuisse.Display
 {
-    static class Menu
+    class Menu
     {
         // Global variables
-        static public string[] Options = Array.Empty<string>();
-        static public int SelectedIndex = 0;
-        public static void Init()
+        public string[] Options = Array.Empty<string>();
+        private int _selectedIndex = 0;
+        public void Init()
         {
-            Options = new string[] { "Morse", "Conversion de Base", "Quit" };
-            SelectedIndex = 0;
+            Options = new string[] { "Morse", "Conversion de Base","Stéganographie" , "Quit" };
+            _selectedIndex = 0;
         }
-        public static void ShowTitle()
+        private void ShowTitle()
         {
             Console.WriteLine(@" ____  __        __ ___   ____    ____  
 / ___| \ \      / /|_ _| / ___|  / ___| 
@@ -31,7 +26,7 @@ namespace CouteauSuisse.Display
 | \ \ | |\  | | | |  _| | |___ 
 |_|\_\|_| \_||___||_|   |_____|");
         }
-        public static void ShowInteractive()
+        private void ShowInteractive()
         {
             Console.Clear();
             ShowTitle();
@@ -41,7 +36,7 @@ namespace CouteauSuisse.Display
 
             for (int i = 0; i < Options.Length; i++)
             {
-                if (i == SelectedIndex)
+                if (i == _selectedIndex)
                 {
                     // Highlight selected option
                     Console.BackgroundColor = ConsoleColor.White;
@@ -57,7 +52,7 @@ namespace CouteauSuisse.Display
 
             Console.WriteLine("");
         }
-        public static int RunInteractive()
+        public int RunInteractive()
         {
             ConsoleKey key;
 
@@ -72,28 +67,28 @@ namespace CouteauSuisse.Display
                 // Handle navigation
                 if (key == ConsoleKey.UpArrow)
                 {
-                    // If Firt Option go to Last Option
-                    SelectedIndex--;
-                    if (SelectedIndex < 0)
+                    // If First Option go to Last Option
+                    _selectedIndex--;
+                    if (_selectedIndex < 0)
                     {
-                        SelectedIndex = Options.Length - 1; // Wrap to bottom
+                        _selectedIndex = Options.Length - 1; // Wrap to bottom
                     }
                 }
                 else if (key == ConsoleKey.DownArrow)
                 {
-                    SelectedIndex++;
+                    _selectedIndex++;
                     // If Last Option go to First Option
-                    if (SelectedIndex >= Options.Length)
+                    if (_selectedIndex >= Options.Length)
                     {
-                        SelectedIndex = 0; // Wrap to top
+                        _selectedIndex = 0; // Wrap to top
                     }
                 }
 
             } while (key != ConsoleKey.Enter);
 
-            return SelectedIndex + 1; // Return 1-based choice
+            return _selectedIndex + 1; // Return 1-based choice
         }
-        public static void HandleChoice(int menuChoice)
+        public void HandleChoice(int menuChoice, Morse morse, ConversionBase conversionBase, Verifications verifications)
         {
             if (menuChoice == -1 || menuChoice < 1 || menuChoice > Options.Length)
             {
@@ -109,14 +104,15 @@ namespace CouteauSuisse.Display
             switch (menuSelectedOption)
             {
                 case "Morse":
-                    Console.WriteLine("\t\t=== Morse ===");
-                    Console.WriteLine("");
-                    Morse.MorseMain();
+                    morse.MorseMain(morse, verifications);
                     break;
                 case "Conversion de Base":
-                    Console.WriteLine("\t\t=== Conversion de Base ===");
+                    conversionBase.BaseMain(conversionBase, verifications);
+
+                    break;
+                case "Stéganographie":
+                    Console.WriteLine("\t\t=== Stéganographie ===");
                     Console.WriteLine("");
-                    ConversionBase.BaseMain();
 
                     break;
                 case "Quit":

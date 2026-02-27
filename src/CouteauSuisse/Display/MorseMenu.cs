@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CouteauSuisse.Features;
+﻿using CouteauSuisse.Features;
 
 namespace CouteauSuisse.Display
 {
-    static class MorseMenu
+    class MorseMenu
     {
-        static public string[] options = new string[] { "Morse Visuel", "Morse Audio", "Back To Menu" };
-        static public int selectedIndex = 0;
-        public static void ShowTitle()
+        public string[] Options = new string[] { "Morse Visuel", "Morse Audio", "Back To Menu" };
+        private int _selectedIndex = 0;
+        public void ShowTitle()
         {
             Console.WriteLine(@" __  __  ___   ____  ____  _____ 
 |  \/  |/ _ \ |  _ \/ ___|| ____|
@@ -19,7 +14,7 @@ namespace CouteauSuisse.Display
 | |  | | |_| ||  _ < ___) | |___ 
 |_|  |_|\___/ |_| \_\____/|_____|");
         }
-        public static void ShowInteractive()
+        public void ShowInteractive()
         {
             Console.Clear();
             ShowTitle();
@@ -27,26 +22,26 @@ namespace CouteauSuisse.Display
             Console.WriteLine("Use ↑↓ arrows to navigate, Enter to select");
             Console.WriteLine("");
 
-            for (int i = 0; i < options.Length; i++)
+            for (int i = 0; i < Options.Length; i++)
             {
-                if (i == selectedIndex)
+                if (i == _selectedIndex)
                 {
                     // Highlight selected option
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
-                    Console.WriteLine($"  > {options[i]} <  ");
+                    Console.WriteLine($"  > {Options[i]} <  ");
                     Console.ResetColor();
                 }
                 else
                 {
-                    Console.WriteLine($"    {options[i]}    ");
+                    Console.WriteLine($"    {Options[i]}    ");
                 }
             }
 
             Console.WriteLine("");
         }
 
-        public static int RunInteractive()
+        public int RunInteractive()
         {
             ConsoleKey key;
 
@@ -62,36 +57,36 @@ namespace CouteauSuisse.Display
                 if (key == ConsoleKey.UpArrow)
                 {
                     // If Firt Option go to Last Option
-                    selectedIndex--;
-                    if (selectedIndex < 0)
+                    _selectedIndex--;
+                    if (_selectedIndex < 0)
                     {
-                        selectedIndex = options.Length - 1; // Wrap to bottom
+                        _selectedIndex = Options.Length - 1; // Wrap to bottom
                     }
                 }
                 else if (key == ConsoleKey.DownArrow)
                 {
-                    selectedIndex++;
+                    _selectedIndex++;
                     // If Last Option go to First Option
-                    if (selectedIndex >= options.Length)
+                    if (_selectedIndex >= Options.Length)
                     {
-                        selectedIndex = 0; // Wrap to top
+                        _selectedIndex = 0; // Wrap to top
                     }
                 }
 
             } while (key != ConsoleKey.Enter);
 
-            return selectedIndex + 1; // Return 1-based choice
+            return _selectedIndex + 1; // Return 1-based choice
         }
 
-        public static void HandleChoice(int morseMenuChoice)
+        public void HandleChoice(int morseMenuChoice, Morse morse, Verifications verifications)
         {
-            if (morseMenuChoice == -1 || morseMenuChoice < 1 || morseMenuChoice > options.Length)
+            if (morseMenuChoice == -1 || morseMenuChoice < 1 || morseMenuChoice > Options.Length)
             {
                 Console.WriteLine("Invalid choice!");
                 return;
             }
 
-            string morseMenuSelectedOption = options[morseMenuChoice - 1];
+            string morseMenuSelectedOption = Options[morseMenuChoice - 1];
 
             Console.Clear();
             Console.WriteLine("");
@@ -101,16 +96,16 @@ namespace CouteauSuisse.Display
                 case "Morse Visuel":
                     Console.WriteLine("\t\t=== Morse ===");
                     Console.WriteLine("");
-                    Morse.answerUser = Morse.AskUser();
-                    Morse.answerConverted = Morse.ConvertToMorse(Morse.answerUser, Morse.answerConverted);
-                    Console.WriteLine($"\tRéponse: '{Morse.answerConverted}'");
+                    morse.AnswerUser = morse.AskUser();
+                    morse.AnswerConverted = morse.ConvertToMorse(morse.AnswerUser);
+                    Console.WriteLine($"\tRéponse: '{morse.AnswerConverted}'");
                     break;
                 case "Morse Audio":
                     Console.WriteLine("\t\t=== Morse Audio ===");
                     Console.WriteLine("");
-                    Morse.answerUser = Morse.AskUser();
-                    Morse.answerConverted = Morse.ConvertToMorse(Morse.answerUser, Morse.answerConverted);
-                    Morse.ConvertMorseToSound(Morse.answerConverted);
+                    morse.AnswerUser = morse.AskUser();
+                    morse.AnswerConverted = morse.ConvertToMorse(morse.AnswerUser);
+                    morse.ConvertMorseToSound(morse.AnswerConverted);
                     break;
                 case "Back To Menu":
 

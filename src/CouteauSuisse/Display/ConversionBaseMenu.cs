@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CouteauSuisse.Features;
-using static CouteauSuisse.Features.Verifications;
+﻿using CouteauSuisse.Features;
 
 namespace CouteauSuisse.Display
 {
-    static class ConversionBaseMenu
+    class ConversionBaseMenu
     {
-        static public string[] options = new string[] { "Décimal --> Binaire", "Binaire --> Décimal", "Binaire --> Octal", "Octal --> Binaire", "Back To Menu" };
-        static public int selectedIndex = 0;
-        public static void ShowTitle()
+        private string[] _options = new string[] { "Décimal --> Binaire", "Binaire --> Décimal", "Binaire --> Octal", "Octal --> Binaire", "Back To Menu" };
+        public string[] Options { get { return _options; } }
+        private int _selectedIndex = 0;
+        private void ShowTitle()
         {
             Console.WriteLine(@" ____    _    ____  _____ 
 | __ )  / \  / ___|| ____|
@@ -20,7 +15,7 @@ namespace CouteauSuisse.Display
 | |_) / ___ \ ___) | |___ 
 |____/_/   \_\____/|_____|");
         }
-        public static void ShowInteractive()
+        private void ShowInteractive()
         {
             Console.Clear();
             ShowTitle();
@@ -28,26 +23,26 @@ namespace CouteauSuisse.Display
             Console.WriteLine("Use ↑↓ arrows to navigate, Enter to select");
             Console.WriteLine("");
 
-            for (int i = 0; i < options.Length; i++)
+            for (int i = 0; i < _options.Length; i++)
             {
-                if (i == selectedIndex)
+                if (i == _selectedIndex)
                 {
                     // Highlight selected option
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
-                    Console.WriteLine($"  > {options[i]} <  ");
+                    Console.WriteLine($"  > {_options[i]} <  ");
                     Console.ResetColor();
                 }
                 else
                 {
-                    Console.WriteLine($"    {options[i]}    ");
+                    Console.WriteLine($"    {_options[i]}    ");
                 }
             }
 
             Console.WriteLine("");
         }
 
-        public static int RunInteractive()
+        public int RunInteractive()
         {
             ConsoleKey key;
 
@@ -63,36 +58,36 @@ namespace CouteauSuisse.Display
                 if (key == ConsoleKey.UpArrow)
                 {
                     // If Firt Option go to Last Option
-                    selectedIndex--;
-                    if (selectedIndex < 0)
+                    _selectedIndex--;
+                    if (_selectedIndex < 0)
                     {
-                        selectedIndex = options.Length - 1; // Wrap to bottom
+                        _selectedIndex = _options.Length - 1; // Wrap to bottom
                     }
                 }
                 else if (key == ConsoleKey.DownArrow)
                 {
-                    selectedIndex++;
+                    _selectedIndex++;
                     // If Last Option go to First Option
-                    if (selectedIndex >= options.Length)
+                    if (_selectedIndex >= _options.Length)
                     {
-                        selectedIndex = 0; // Wrap to top
+                        _selectedIndex = 0; // Wrap to top
                     }
                 }
 
             } while (key != ConsoleKey.Enter);
 
-            return selectedIndex + 1; // Return 1-based choice
+            return _selectedIndex + 1; // Return 1-based choice
         }
 
-        public static void HandleChoice(int choice)
+        public void HandleChoice(int choice,ConversionBase conversionBase, Verifications verifications)
         {
-            if (choice == -1 || choice < 1 || choice > options.Length)
+            if (choice == -1 || choice < 1 || choice > _options.Length)
             {
                 Console.WriteLine("Invalid choice!");
                 return;
             }
 
-            string selectedOption = options[choice - 1];
+            string selectedOption = _options[choice - 1];
 
             Console.Clear();
             Console.WriteLine("");
@@ -102,26 +97,26 @@ namespace CouteauSuisse.Display
                 case "Décimal --> Binaire":
                     Console.WriteLine("\t\t=== Décimal --> Binaire ===");
                     Console.WriteLine("");
-                    IntAndRangeCheck(1, ConversionBase.AskUser());
-                    ConversionBase.Transformation(1);
+                    verifications.IntAndRangeCheck(1, conversionBase.AskUser(), conversionBase);
+                    conversionBase.Transformation(1);
                     break;
                 case "Binaire --> Décimal":
                     Console.WriteLine("\t\t=== Binaire --> Décimal ===");
                     Console.WriteLine("");
-                    IntAndRangeCheck(2, ConversionBase.AskUser());
-                    ConversionBase.Transformation(2);
+                    verifications.IntAndRangeCheck(2, conversionBase.AskUser(), conversionBase);
+                    conversionBase.Transformation(2);
                     break;
                 case "Binaire --> Octal":
                     Console.WriteLine("\t\t=== Binaire --> Octal ===");
                     Console.WriteLine("");
-                    IntAndRangeCheck(3, ConversionBase.AskUser());
-                    ConversionBase.Transformation(3);
+                    verifications.IntAndRangeCheck(3, conversionBase.AskUser(), conversionBase);
+                    conversionBase.Transformation(3);
                     break;
                 case "Octal --> Binaire":
                     Console.WriteLine("\t\t=== Octal --> Binaire ===");
                     Console.WriteLine("");
-                    IntAndRangeCheck(4, ConversionBase.AskUser());
-                    ConversionBase.Transformation(4);
+                    verifications.IntAndRangeCheck(4, conversionBase.AskUser(), conversionBase);
+                    conversionBase.Transformation(4);
                     break;
                 case "Back To Menu":
 

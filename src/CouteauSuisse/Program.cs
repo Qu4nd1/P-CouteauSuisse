@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using CouteauSuisse.Display;
+﻿using CouteauSuisse.Display;
+using CouteauSuisse.Features;
 
 namespace CouteauSuisse
 {
@@ -10,18 +10,23 @@ namespace CouteauSuisse
             // Main program
             bool running = true;
 
+            Menu menu = new Menu();
+            Morse morse = new Morse();
+            ConversionBase conversionBase = new ConversionBase();
+            Verifications verifications = new Verifications();
+            
             while (running)
             {
-                Menu.Init();
-                int menuChoice = Menu.RunInteractive();
+                menu.Init();
+                int menuChoice = menu.RunInteractive();
 
-                if (Menu.Options[menuChoice - 1] == "Quit")
+                if (menu.Options[menuChoice - 1] == "Quit")
                 {
                     running = false;
                 }
                 else
                 {
-                    Menu.HandleChoice(menuChoice);
+                    menu.HandleChoice(menuChoice, morse, conversionBase, verifications);
                     Console.WriteLine("\nPress any key to return to menu...");
                     Console.ReadKey(true);
                 }
