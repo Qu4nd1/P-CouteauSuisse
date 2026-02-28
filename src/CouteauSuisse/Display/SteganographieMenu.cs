@@ -1,19 +1,18 @@
-﻿using CouteauSuisse.Features;
+using CouteauSuisse.Features;
+namespace CouteauSuisse.Display;
 
-namespace CouteauSuisse.Display
+class SteganographieMenu
 {
-    class MorseMenu
-    {
-        public string[] Options = new string[] { "Morse Visuel", "Morse Audio", "Back To Menu" };
+        public string[] Options = new string[] { "Encoder", "Décoder", "Back To Menu" };
         private int _selectedIndex = 0;
-        private void ShowTitle()
+        public void ShowTitle()
         {
             Console.WriteLine(@"
- __  __  ___   ____  ____  _____ 
-|  \/  |/ _ \ |  _ \/ ___|| ____|
-| |\/| | | | || |_) \___ \|  _|  
-| |  | | |_| ||  _ < ___) | |___ 
-|_|  |_|\___/ |_| \_\____/|_____|");
+  ____   _____   _____    ___     _      _   _    ___    ___    ____       _     ___    _   _   _____   _____
+ / ___| |_   _| | ____|  / __|   / \    | \ | |  / _ \  / __|  |  _ \     / \   |  _ \ | |_| | |_   _| | ____|
+ \___ \   | |   |  _|   | |  _  / _ \   |  \| | | | | || |  _  | |_) |   / _ \  | |_) ||     |   | |   |  _|
+  ___) |  | |   | |___  | |_| |/ ___ \  | |\  | | |_| || |_| | |  _ <   / ___ \ |  __/ |  _  |  _| |_  | |___
+ |____/   |_|   |_____|  \___//_/   \_\ |_| \_|  \___/  \___/  |_| \_\ /_/   \_\|_|    |_| |_| |_____| |_____|");
         }
         private void ShowInteractive()
         {
@@ -79,7 +78,7 @@ namespace CouteauSuisse.Display
             return _selectedIndex + 1; // Return 1-based choice
         }
 
-        public void HandleChoice(int morseMenuChoice, Morse morse, Verifications verifications)
+        public void HandleChoice(int morseMenuChoice, Steganographie steganographie, Morse morse, Verifications verifications)
         {
             if (morseMenuChoice == -1 || morseMenuChoice < 1 || morseMenuChoice > Options.Length)
             {
@@ -94,24 +93,21 @@ namespace CouteauSuisse.Display
 
             switch (morseMenuSelectedOption)
             {
-                case "Morse Visuel":
-                    Console.WriteLine("\t\t=== Morse ===");
+                case "Encoder":
+                    Console.WriteLine("\t\t=== Encodage ===");
                     Console.WriteLine("");
-                    morse.AnswerUser = morse.AskUser();
-                    morse.AnswerConverted = morse.ConvertToMorse(morse.AnswerUser);
-                    Console.WriteLine($"\tRéponse: '{morse.AnswerConverted}'");
+                    steganographie.AskUser(true);
+                    steganographie.EncodingTransformation(morse);
                     break;
-                case "Morse Audio":
-                    Console.WriteLine("\t\t=== Morse Audio ===");
+                case "Décoder":
+                    Console.WriteLine("\t\t=== Décodage ===");
                     Console.WriteLine("");
-                    morse.AnswerUser = morse.AskUser();
-                    morse.AnswerConverted = morse.ConvertToMorse(morse.AnswerUser);
-                    morse.ConvertMorseToSound(morse.AnswerConverted);
+                    steganographie.DecodingTransformation(morse);
+                    
                     break;
                 case "Back To Menu":
 
                     break;
             }
-        }
-    }
+        }   
 }

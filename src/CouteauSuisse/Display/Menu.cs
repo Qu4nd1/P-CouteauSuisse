@@ -14,7 +14,8 @@ namespace CouteauSuisse.Display
         }
         private void ShowTitle()
         {
-            Console.WriteLine(@" ____  __        __ ___   ____    ____  
+            Console.WriteLine(@"
+ ____  __        __ ___   ____    ____  
 / ___| \ \      / /|_ _| / ___|  / ___| 
 \___ \  \ \ /\ / /  | |  \___ \  \___ \ 
  ___) |  \ V  V /   | |   ___) |  ___) |
@@ -88,7 +89,7 @@ namespace CouteauSuisse.Display
 
             return _selectedIndex + 1; // Return 1-based choice
         }
-        public void HandleChoice(int menuChoice, Morse morse, ConversionBase conversionBase, Verifications verifications)
+        public void HandleChoice(int menuChoice, Morse morse, ConversionBase conversionBase, Steganographie steganographie, Verifications verifications)
         {
             if (menuChoice == -1 || menuChoice < 1 || menuChoice > Options.Length)
             {
@@ -108,12 +109,9 @@ namespace CouteauSuisse.Display
                     break;
                 case "Conversion de Base":
                     conversionBase.BaseMain(conversionBase, verifications);
-
                     break;
                 case "Stéganographie":
-                    Console.WriteLine("\t\t=== Stéganographie ===");
-                    Console.WriteLine("");
-
+                    steganographie.StegMain(steganographie, morse, verifications);
                     break;
                 case "Quit":
                     Console.WriteLine("Thanks for playing!");

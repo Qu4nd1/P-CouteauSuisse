@@ -13,6 +13,7 @@ namespace CouteauSuisse
             Menu menu = new Menu();
             Morse morse = new Morse();
             ConversionBase conversionBase = new ConversionBase();
+            Steganographie steganographie = new Steganographie();
             Verifications verifications = new Verifications();
             
             while (running)
@@ -26,7 +27,7 @@ namespace CouteauSuisse
                 }
                 else
                 {
-                    menu.HandleChoice(menuChoice, morse, conversionBase, verifications);
+                    menu.HandleChoice(menuChoice, morse, conversionBase, steganographie, verifications);
                     Console.WriteLine("\nPress any key to return to menu...");
                     Console.ReadKey(true);
                 }

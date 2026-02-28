@@ -9,7 +9,8 @@ namespace CouteauSuisse.Display
         private int _selectedIndex = 0;
         private void ShowTitle()
         {
-            Console.WriteLine(@" ____    _    ____  _____ 
+            Console.WriteLine(@"
+ ____    _    ____  _____ 
 | __ )  / \  / ___|| ____|
 |  _ \ / _ \ \___ \|  _|  
 | |_) / ___ \ ___) | |___ 
