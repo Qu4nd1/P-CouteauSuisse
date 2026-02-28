@@ -78,9 +78,9 @@ class Steganographie
         for (int i = 0; i < clearMessage.Length; i++)
         {
             transformedPhrase += clearMessage[i];
-            if (hiddenMessage[i] != ' ')
+            if (hiddenMessage[i%hiddenMessage.Length] != ' ')
             {
-                transformedLetter = morse.ConvertToMorse(hiddenMessage[i].ToString());
+                transformedLetter = morse.ConvertToMorse(hiddenMessage[i % hiddenMessage.Length].ToString());
                 for (int j = 0; j < transformedLetter.Length; j++)
                 {
                     if (transformedLetter[j] == '.')
