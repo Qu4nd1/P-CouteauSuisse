@@ -73,14 +73,14 @@ class Steganographie
         string transformedLetter;
         string notVisibleLetter = "";
         string transformedPhrase = "";
-        string hiddenMessage = _answerUser[_hiddenMessageIndex];
+        string hiddenMessage = _answerUser[_hiddenMessageIndex] + ' ';
         string clearMessage = _answerUser[_clearMessageIndex];
         for (int i = 0; i < clearMessage.Length; i++)
         {
             transformedPhrase += clearMessage[i];
-            if (hiddenMessage[i%hiddenMessage.Length] != ' ')
+            if (i < (hiddenMessage.Length - 1))
             {
-                transformedLetter = morse.ConvertToMorse(hiddenMessage[i % hiddenMessage.Length].ToString());
+                transformedLetter = morse.ConvertToMorse(hiddenMessage[i].ToString());
                 for (int j = 0; j < transformedLetter.Length; j++)
                 {
                     if (transformedLetter[j] == '.')

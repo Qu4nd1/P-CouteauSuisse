@@ -93,9 +93,6 @@ namespace CouteauSuisse.Features
             AnswerConverted = ""; // Reset de la variable
             for (int i = 0; i < message.Length; i++)
             {
-                // si la lettre n'est pas finie
-                if (!letterCompleted)
-                {
                     switch (message[i])
                     {
                         // Point
@@ -106,29 +103,20 @@ namespace CouteauSuisse.Features
                         case '\u200C':
                             morseLetter += '-';
                             break;
+                        // Espace entre lettre
+                        case '\u200D':
+                            letterCompleted = true;
+                            if (reversedMorseTable.TryGetValue(morseLetter, out morseLetterConverted))
+                            {
+                                AnswerConverted += morseLetterConverted;
+                                morseLetter = ""; // Reset de la variable
+                            }
+                            break;
+                    // Esapce entre mots
+                    case '\u2060':
+                        AnswerConverted += ' ';
+                        break;
                     }
-                }
-                // Si la lettre est finie
-                else if (letterCompleted)
-                {
-                    for (int j = 0; j < reversedMorseTable.Count && !_letterFound; j++)
-                        if (reversedMorseTable.TryGetValue(morseLetter, out morseLetterConverted))
-                        {
-                            AnswerConverted += morseLetterConverted;
-                            _letterFound = true;
-                        }
-                    _letterFound = false; // Reset de la variable
-                }
-                // Esapce entre lettres
-                else if (message[i] == '\u200D')
-                {
-                    morseLetter = ""; // Reset de la variable
-                }
-                // Esapace entre mots
-                else if (message[i] == '\u2060')
-                {
-                    AnswerConverted += ' ';
-                }
             }
             return decodedMessage;
         }
