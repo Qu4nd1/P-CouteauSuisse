@@ -1,5 +1,6 @@
 semaine 1: création du repo + fonctionnalité morse visuel
 semaine 2: fonctionnalité morse audio + menu de choix + menu morse de choix
-semaine 3: structuration du program en classe static et namespace + conversion Decimal à Binaire et inverse
+semaine 3: structuration du program en classe static et namespace + conversion Décimal à Binaire et inverse
 semaine 4: conversion de Binaire à Octal et inverse + interdiction de rentrer des lettres pour les conversions de base
-semaine 5: ajout des limites de nombres EX: binaire accept seulement 0 et 1 etc..
+semaine 5: ajout des limites de nombres EX: binaire accepte seulement 0 et 1 etc..
+semaine 6: instanciation du programme et développement de l'option de sténographie qui fonctionne à l'écriture mais pas encore à la lecture
