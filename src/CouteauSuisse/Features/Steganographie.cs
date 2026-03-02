@@ -78,7 +78,7 @@ class Steganographie
         for (int i = 0; i < clearMessage.Length; i++)
         {
             transformedPhrase += clearMessage[i];
-            if (i < (hiddenMessage.Length - 1))
+            if (i < (hiddenMessage.Length))
             {
                 transformedLetter = morse.ConvertToMorse(hiddenMessage[i].ToString());
                 for (int j = 0; j < transformedLetter.Length; j++)
@@ -97,7 +97,6 @@ class Steganographie
                     }
                 }
                 transformedPhrase += notVisibleLetter;
-                transformedLetter = "";
             }
             else
             {
@@ -115,6 +114,5 @@ class Steganographie
         messageToDecode = ReadFromFile("D:/114/P-CouteauSuisse/doc/stegano.txt");
         messageDecoded = morse.MorseToText(messageToDecode);
         Console.WriteLine($"Le message caché est: {messageDecoded}");
-        
     }
 }
