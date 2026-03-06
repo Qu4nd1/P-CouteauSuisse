@@ -71,39 +71,73 @@ class Steganographie
     public void EncodingTransformation(Morse morse)
     {
         string transformedLetter;
+        string transformedLetterWithoutSpace;
         string notVisibleLetter = "";
         string transformedPhrase = "";
         string hiddenMessage = _answerUser[_hiddenMessageIndex] + ' ';
         string clearMessage = _answerUser[_clearMessageIndex];
+        char letterSpace = '\u200D';
+        char wordSpace = '\u2060';
+        int lastCharIndex = 0;
+        bool hiddenLetterAdded = false;
+        bool hiddenWordNotAdded = true;
+        bool hiddenSpaceAdded = false;
+        string enryptedVisiblePhrase = "";
+        string visibleLetter = "";
         for (int i = 0; i < clearMessage.Length; i++)
         {
+            hiddenSpaceAdded = !hiddenSpaceAdded;
+            hiddenLetterAdded = !hiddenLetterAdded;
             transformedPhrase += clearMessage[i];
-            if (i < (hiddenMessage.Length))
+            enryptedVisiblePhrase += clearMessage[i];
+            if (hiddenWordNotAdded && (i < hiddenMessage.Length))
             {
-                transformedLetter = morse.ConvertToMorse(hiddenMessage[i].ToString());
-                for (int j = 0; j < transformedLetter.Length; j++)
+                if (!hiddenLetterAdded)
                 {
-                    if (transformedLetter[j] == '.')
+                    transformedPhrase += letterSpace;
+                    enryptedVisiblePhrase += " ";
+                    hiddenSpaceAdded = true;
+                }
+                if (hiddenSpaceAdded)
+                {
+                    transformedLetter = morse.ConvertToMorse(hiddenMessage[i].ToString());
+                    transformedLetterWithoutSpace = transformedLetter.TrimEnd(' ');
+                    for (int j = 0; j < transformedLetter.Length; j++)
                     {
-                        notVisibleLetter += '\u200B';
-                    }
-                    else if (transformedLetter[j] == '-')
-                    {
-                        notVisibleLetter += '\u200C';
-                    }
-                    else if (transformedLetter[j] == ' ')
-                    {
-                        notVisibleLetter += '\u200D';
+                        if (j < transformedLetterWithoutSpace.Length)
+                            switch (transformedLetter[j])
+                            {
+                                case '.':
+                                    notVisibleLetter += '\u200B';
+                                    visibleLetter += ".";
+                                    break;
+
+                                case '-':
+                                    notVisibleLetter += '\u200C';
+                                    visibleLetter += "-";
+                                    break;
+                            }
+                        if (j == transformedLetterWithoutSpace.Length - 1)
+                        {
+                            lastCharIndex = j;
+                            transformedPhrase += notVisibleLetter;
+                            notVisibleLetter = "";
+                            enryptedVisiblePhrase += visibleLetter;
+                            visibleLetter = "";
+                            hiddenLetterAdded = true;
+                        }
                     }
                 }
-                transformedPhrase += notVisibleLetter;
             }
             else
             {
                 transformedPhrase += '\u2060';
+                enryptedVisiblePhrase += "/";
             }
+                
         }
-        SaveToFile("D:/114/P-CouteauSuisse/doc/stegano.txt", transformedPhrase);
+        SaveToFile("../../../../../doc/stegano.txt", transformedPhrase);
+        Console.WriteLine(enryptedVisiblePhrase);
         Console.WriteLine("Le texte avec stéganographie a été sauvegardé dans le fichier stegano.txt");
     }
 
