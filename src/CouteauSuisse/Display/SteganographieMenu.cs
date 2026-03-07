@@ -96,7 +96,7 @@ class SteganographieMenu
                 case "Encoder":
                     Console.WriteLine("\t\t=== Encodage ===");
                     Console.WriteLine("");
-                    steganographie.AskUser(true);
+                    steganographie.AskUser();
                     steganographie.EncodingTransformation(morse);
                     break;
                 case "Décoder":

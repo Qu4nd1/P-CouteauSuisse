@@ -30,19 +30,33 @@ class Steganographie
             }
         } while (_running);
     }
-    public string[] AskUser(bool optionChoice)
+    public string[] AskUser()
     {
-        if (optionChoice)
+        do
         {
             Console.WriteLine("Texte porteur (ce que l'on verra): ");
             _answerUser[_clearMessageIndex] = Console.ReadLine();
-            Console.WriteLine("Message secret à cacher (A-Z et espace): "); 
+            Console.WriteLine("Message secret à cacher (A-Z et espace): ");
             _answerUser[_hiddenMessageIndex] = Console.ReadLine();
-        }
-        else
-        {
-        }
+        } while (!IsClearMessageLongEnough());
         return _answerUser;
+    }
+    public bool IsClearMessageLongEnough()
+    {
+        int required = 0;
+        string hiddenMessage = _answerUser[_hiddenMessageIndex];
+
+        for (int i = 0; i < hiddenMessage.Length; i++)
+        {
+            if (hiddenMessage[i] == ' ')
+                required += 1;
+            else if (i == hiddenMessage.Length - 1)
+                required += 1; // last letter, no separator
+            else
+                required += 2;
+        }
+
+        return _answerUser[_clearMessageIndex].Length >= required;
     }
 
     public void SaveToFile(string path, string result)

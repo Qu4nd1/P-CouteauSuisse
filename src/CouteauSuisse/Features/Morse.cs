@@ -72,9 +72,7 @@ namespace CouteauSuisse.Features
 
         public string MorseToText(string message)
         {
-            string decodedMessage = "";
             string morseLetter = "";
-            bool letterCompleted = false;
             char morseLetterConverted;
             Dictionary<string, char> reversedMorseTable = new Dictionary<string, char>
             {
@@ -103,22 +101,27 @@ namespace CouteauSuisse.Features
                         case '\u200C':
                             morseLetter += '-';
                             break;
-                        // Espace entre lettre
-                        case '\u200D':
-                            letterCompleted = true;
-                            if (reversedMorseTable.TryGetValue(morseLetter, out morseLetterConverted))
-                            {
-                                AnswerConverted += morseLetterConverted;
-                                morseLetter = ""; // Reset de la variable
-                            }
+                        // Esapce entre mots
+                        case '\u2060':
+                            AnswerConverted += ' ';
                             break;
-                    // Esapce entre mots
-                    case '\u2060':
-                        AnswerConverted += ' ';
+                    // Espace entre lettre
+                    case '\u200D':
+                    default:
+                        if (reversedMorseTable.TryGetValue(morseLetter, out morseLetterConverted))
+                        {
+                            AnswerConverted += morseLetterConverted;
+                            morseLetter = ""; // Reset de la variable
+                        }
                         break;
-                    }
+                }
             }
-            return decodedMessage;
+            if (reversedMorseTable.TryGetValue(morseLetter, out morseLetterConverted))
+            {
+                AnswerConverted += morseLetterConverted;
+                morseLetter = ""; // Reset de la variable
+            }
+            return AnswerConverted;
         }
         public void ConvertMorseToSound(string crtAnswerConverted)
         {
