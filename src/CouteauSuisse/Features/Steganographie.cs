@@ -74,67 +74,74 @@ class Steganographie
         string transformedLetterWithoutSpace;
         string notVisibleLetter = "";
         string transformedPhrase = "";
-        string hiddenMessage = _answerUser[_hiddenMessageIndex] + ' ';
+        string hiddenMessage = _answerUser[_hiddenMessageIndex];
         string clearMessage = _answerUser[_clearMessageIndex];
         char letterSpace = '\u200D';
         char wordSpace = '\u2060';
         int lastCharIndex = 0;
         bool hiddenLetterAdded = false;
         bool hiddenWordNotAdded = true;
-        bool hiddenSpaceAdded = false;
         string enryptedVisiblePhrase = "";
         string visibleLetter = "";
+        int hiddenLetterIndex = 0;
+
         for (int i = 0; i < clearMessage.Length; i++)
         {
-            hiddenSpaceAdded = !hiddenSpaceAdded;
-            hiddenLetterAdded = !hiddenLetterAdded;
             transformedPhrase += clearMessage[i];
             enryptedVisiblePhrase += clearMessage[i];
-            if (hiddenWordNotAdded && (i < hiddenMessage.Length))
+            if (hiddenWordNotAdded)
             {
-                if (!hiddenLetterAdded)
+                if (hiddenLetterIndex < hiddenMessage.Length)
                 {
-                    transformedPhrase += letterSpace;
-                    enryptedVisiblePhrase += " ";
-                    hiddenSpaceAdded = true;
-                }
-                if (hiddenSpaceAdded)
-                {
-                    transformedLetter = morse.ConvertToMorse(hiddenMessage[i].ToString());
-                    transformedLetterWithoutSpace = transformedLetter.TrimEnd(' ');
-                    for (int j = 0; j < transformedLetter.Length; j++)
+                    if (hiddenLetterAdded && hiddenMessage[hiddenLetterIndex] != ' ')
                     {
-                        if (j < transformedLetterWithoutSpace.Length)
-                            switch (transformedLetter[j])
-                            {
-                                case '.':
-                                    notVisibleLetter += '\u200B';
-                                    visibleLetter += ".";
-                                    break;
-
-                                case '-':
-                                    notVisibleLetter += '\u200C';
-                                    visibleLetter += "-";
-                                    break;
-                            }
-                        if (j == transformedLetterWithoutSpace.Length - 1)
+                        transformedPhrase += letterSpace;
+                        enryptedVisiblePhrase += " ";
+                        hiddenLetterAdded = false;
+                    }
+                    else if (hiddenMessage[hiddenLetterIndex] == ' ')
+                    {
+                        transformedPhrase += wordSpace;
+                        enryptedVisiblePhrase += '/';
+                        hiddenLetterIndex++;
+                        hiddenLetterAdded = false;
+                    }
+                    else
+                    {
+                        transformedLetter = morse.ConvertToMorse(hiddenMessage[hiddenLetterIndex++].ToString());
+                        transformedLetterWithoutSpace = transformedLetter.TrimEnd(' ');
+                        for (int j = 0; j < transformedLetter.Length; j++)
                         {
-                            lastCharIndex = j;
-                            transformedPhrase += notVisibleLetter;
-                            notVisibleLetter = "";
-                            enryptedVisiblePhrase += visibleLetter;
-                            visibleLetter = "";
-                            hiddenLetterAdded = true;
+                            if (j < transformedLetterWithoutSpace.Length)
+                                switch (transformedLetterWithoutSpace[j])
+                                {
+                                    case '.':
+                                        notVisibleLetter += '\u200B';
+                                        visibleLetter += ".";
+                                        break;
+
+                                    case '-':
+                                        notVisibleLetter += '\u200C';
+                                        visibleLetter += "-";
+                                        break;
+                                }
+                            if (j == transformedLetterWithoutSpace.Length - 1)
+                            {
+                                lastCharIndex = j;
+                                transformedPhrase += notVisibleLetter;
+                                notVisibleLetter = "";
+                                enryptedVisiblePhrase += visibleLetter;
+                                visibleLetter = "";
+                                hiddenLetterAdded = !hiddenLetterAdded;
+                            }
                         }
                     }
                 }
+                else
+                {
+                    hiddenWordNotAdded = false;
+                }
             }
-            else
-            {
-                transformedPhrase += '\u2060';
-                enryptedVisiblePhrase += "/";
-            }
-                
         }
         SaveToFile("../../../../../doc/stegano.txt", transformedPhrase);
         Console.WriteLine(enryptedVisiblePhrase);
