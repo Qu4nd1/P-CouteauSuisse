@@ -92,17 +92,13 @@ class Steganographie
         string clearMessage = _answerUser[_clearMessageIndex];
         char letterSpace = '\u200D';
         char wordSpace = '\u2060';
-        int lastCharIndex = 0;
         bool hiddenLetterAdded = false;
         bool hiddenWordNotAdded = true;
-        string enryptedVisiblePhrase = "";
-        string visibleLetter = "";
         int hiddenLetterIndex = 0;
 
         for (int i = 0; i < clearMessage.Length; i++)
         {
             transformedPhrase += clearMessage[i];
-            enryptedVisiblePhrase += clearMessage[i];
             if (hiddenWordNotAdded)
             {
                 if (hiddenLetterIndex < hiddenMessage.Length)
@@ -110,13 +106,11 @@ class Steganographie
                     if (hiddenLetterAdded && hiddenMessage[hiddenLetterIndex] != ' ')
                     {
                         transformedPhrase += letterSpace;
-                        enryptedVisiblePhrase += " ";
                         hiddenLetterAdded = false;
                     }
                     else if (hiddenMessage[hiddenLetterIndex] == ' ')
                     {
                         transformedPhrase += wordSpace;
-                        enryptedVisiblePhrase += '/';
                         hiddenLetterIndex++;
                         hiddenLetterAdded = false;
                     }
@@ -131,21 +125,16 @@ class Steganographie
                                 {
                                     case '.':
                                         notVisibleLetter += '\u200B';
-                                        visibleLetter += ".";
                                         break;
 
                                     case '-':
                                         notVisibleLetter += '\u200C';
-                                        visibleLetter += "-";
                                         break;
                                 }
                             if (j == transformedLetterWithoutSpace.Length - 1)
                             {
-                                lastCharIndex = j;
                                 transformedPhrase += notVisibleLetter;
                                 notVisibleLetter = "";
-                                enryptedVisiblePhrase += visibleLetter;
-                                visibleLetter = "";
                                 hiddenLetterAdded = !hiddenLetterAdded;
                             }
                         }
@@ -158,7 +147,6 @@ class Steganographie
             }
         }
         SaveToFile("../../../../../doc/stegano.txt", transformedPhrase);
-        Console.WriteLine(enryptedVisiblePhrase);
         Console.WriteLine("Le texte avec stéganographie a été sauvegardé dans le fichier stegano.txt");
     }
 

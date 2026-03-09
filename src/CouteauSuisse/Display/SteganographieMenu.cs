@@ -3,7 +3,7 @@ namespace CouteauSuisse.Display;
 
 class SteganographieMenu
 {
-        public string[] Options = new string[] { "Encoder", "DÃ©coder", "Back To Menu" };
+        public string[] Options = new string[] { "Encoder", "Décoder", "Back To Menu" };
         private int _selectedIndex = 0;
         public void ShowTitle()
         {
@@ -19,7 +19,7 @@ class SteganographieMenu
             Console.Clear();
             ShowTitle();
             Console.WriteLine("");
-            Console.WriteLine("Use â†‘â†“ arrows to navigate, Enter to select");
+            Console.WriteLine("Use ?? arrows to navigate, Enter to select");
             Console.WriteLine("");
 
             for (int i = 0; i < Options.Length; i++)
@@ -99,14 +99,12 @@ class SteganographieMenu
                     steganographie.AskUser();
                     steganographie.EncodingTransformation(morse);
                     break;
-                case "DÃ©coder":
-                    Console.WriteLine("\t\t=== DÃ©codage ===");
+                case "Décoder":
+                    Console.WriteLine("\t\t=== Décodage ===");
                     Console.WriteLine("");
                     steganographie.DecodingTransformation(morse);
-                    
                     break;
                 case "Back To Menu":
-
                     break;
             }
         }   
